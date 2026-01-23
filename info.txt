@@ -11,6 +11,10 @@
 
 # docker run -d --name oauth2-service -p 8087:8087 --restart unless-stopped oauth2-service
 
+Остановить контейнер можно командой docker stop.
+Пример:
+# docker stop oauth2-service
+
 ---------
 Собираем Docker-образ
 В корне проекта:
