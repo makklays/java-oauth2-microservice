@@ -1,0 +1,52 @@
+#name: CD
+
+# Triggered on push to the master branch (production)
+# Use GitHub Secrets: PROD_HOST, PROD_USER, PROD_PASSWORD for server credentials
+#on:
+#  push:
+#    branches:
+#      - master
+
+#jobs:
+#  deploy:
+#    name: Deploy to Production
+#    runs-on: ubuntu-latest
+
+#    steps:
+      # 1. Checkout code
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+
+      # 2. Set up JDK
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: 'temurin'
+#          java-version: '17'
+#          cache: 'maven'
+
+      # 3. Build the project
+#      - name: Build JAR
+#        run: mvn clean package -DskipTests
+
+      # 4. Upload JAR to production server
+#      - name: Deploy JAR to prod server
+#        uses: appleboy/scp-action@v0.1.4
+#        with:
+#          host: ${{ secrets.PROD_HOST }}
+#          username: ${{ secrets.PROD_USER }}
+#          password: ${{ secrets.PROD_PASSWORD }}
+#          source: "target/*.jar"
+#          target: "/opt/oauth2-service/app.jar"
+
+      # 5. Restart the service on the server
+#      - name: Restart service
+#        uses: appleboy/ssh-action@v0.1.6
+#        with:
+#          host: ${{ secrets.PROD_HOST }}
+#          username: ${{ secrets.PROD_USER }}
+#          password: ${{ secrets.PROD_PASSWORD }}
+#          script: |
+#            sudo systemctl stop oauth2-service
+#            sudo systemctl start oauth2-service
+
