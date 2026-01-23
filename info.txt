@@ -4,6 +4,39 @@
 /api/v1/oauth2/login          - получения token пользователя по логин (username или email) и пароль
 /api/v1/oauth2/refresh-token  - URL для обновления token, если он expired
 
+---------
+Собираем Docker-образ
+В корне проекта:
+# docker build -t oauth2-service:latest .
+Проверить (сборку):
+# docker images | grep oauth2-service
+
+Запускаем контейнер:
+Простой запуск (без БД)
+# docker run -p 8087:8087 --name oauth2-service oauth2-service:latest
+
+Подключение к PostgreSQL (реальный сценарий):
+application.yml (localhost не работает внутри контейнера — нужно имя контейнера БД)
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://my-postgres:5432/ms_oauth2
+    username: admin
+    password: admin
+  flyway:
+      enabled: true
+      url: jdbc:postgresql://my-postgres:5432/ms_oauth2
+      user: admin
+      password: admin
+В этом случае нужно запускать контейнер с указанием сети, в которой находится контейнер с PostgreSQL.
+
+Проверка сервиса:
+curl http://localhost:8087/actuator/health
+или
+curl -X POST http://localhost:8087/api/v1/oauth2/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"test","password":"qwerty"}'
+
+---------
 Для запуска этого микросервиса используем команду:
 # docker run --env-file .env -p 8087:8087 oauth2-service
 
