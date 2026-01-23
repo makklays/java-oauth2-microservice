@@ -5,6 +5,13 @@
 /api/v1/oauth2/refresh-token  - URL для обновления token, если он expired
 
 ---------
+Запуск контейнера с автозапуском
+Чтобы контейнер запускался автоматически при перезагрузке сервера,
+нужно добавить флаг --restart unless-stopped при запуске контейнера:
+
+# docker run -d --name oauth2-service -p 8087:8087 --restart unless-stopped oauth2-service
+
+---------
 Собираем Docker-образ
 В корне проекта:
 # docker build -t oauth2-service:latest .
