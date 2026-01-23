@@ -2,6 +2,7 @@ package com.techmatrix18.service;
 
 import com.techmatrix18.model.User;
 import com.techmatrix18.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,56 +17,84 @@ import reactor.core.publisher.Mono;
  * @author Alexander Kuziv <makklays@gmail.com>
  * @company TechMatrix18
  * @version 0.0.1
- * @since 21.01.2026
+ * @since 22.01.2026
  */
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
-     * Регистрация нового пользователя.
+     * Registration a new User
      */
     public Mono<User> register(User user) {
-        // Здесь можно добавить хеширование пароля, валидацию и т.д.
+        // Here you can add password hashing, validation, etc.
         return userRepository.save(user);
     }
 
     /**
-     * Получить пользователя по ID.
+     * Checks if a user with the given email already exists in the database.
+     *
+     * @param email
+     * @return
+     */
+    public Mono<Boolean> existsByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(u -> true)
+                .defaultIfEmpty(false);
+    }
+
+    /**
+     * Get User by ID
      */
     public Mono<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
     /**
-     * Получить всех пользователей.
+     * Get all Users
      */
     public Flux<User> findAll() {
         return userRepository.findAll();
     }
 
     /**
-     * Обновить данные пользователя.
+     * Update data of User
      */
     public Mono<User> update(User user) {
         return userRepository.findById(user.getId())
-                .flatMap(existingUser -> {
-                    existingUser.setEmail(user.getEmail());
-                    existingUser.setUsername(user.getUsername());
-                    // обновить другие поля по необходимости
-                    return userRepository.save(existingUser);
-                });
+            .flatMap(existingUser -> {
+                existingUser.setEmail(user.getEmail());
+                existingUser.setUsername(user.getUsername());
+                // Update other fields as needed
+                return userRepository.save(existingUser);
+            });
     }
 
     /**
-     * Удалить пользователя по ID.
+     * Delete user by ID
      */
     public Mono<Void> deleteById(Long id) {
         return userRepository.deleteById(id);
+    }
+
+    /**
+     * Authenticate user by username/email and password
+     */
+    public Mono<User> authenticate(String usernameOrEmail, String rawPassword) {
+        return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+            .flatMap(user -> {
+                if (passwordEncoder.matches(rawPassword, user.getPassword())) {
+                    return Mono.just(user);
+                } else {
+                    return Mono.empty(); // Invalid password
+                }
+            });
     }
 }
 
