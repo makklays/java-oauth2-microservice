@@ -3,6 +3,7 @@ package com.techmatrix18.repository;
 import com.techmatrix18.model.Token;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 
 /**
  * Token Repository
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TokenRepository extends ReactiveCrudRepository<Token, Long> {
-    // TODO
+
+    Mono<Token> findByRefreshTokenAndRevokedFalse(String refreshToken);
 }
 

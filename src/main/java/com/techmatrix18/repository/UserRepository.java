@@ -3,6 +3,7 @@ package com.techmatrix18.repository;
 import com.techmatrix18.model.User;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 
 /**
  * User Repository
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends ReactiveCrudRepository<User, Long> {
-    // TODO
+
+    Mono<User> findByUsernameOrEmail(String username, String email);
+
+    Mono<User> findByEmail(String email);
 }
 
