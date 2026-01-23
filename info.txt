@@ -9,6 +9,15 @@
 Чтобы контейнер запускался автоматически при перезагрузке сервера,
 нужно добавить флаг --restart unless-stopped при запуске контейнера:
 
+Запуск PostgreSQL в Docker с автозапуском:
+# docker run -d --name my-postgres -p 5432:5432 \
+    -e POSTGRES_USER=admin \
+    -e POSTGRES_PASSWORD=admin \
+    -e POSTGRES_DB=ms_oauth2 \
+    -v pgdata:/var/lib/postgresql/data \
+    --restart unless-stopped \
+    postgres:12
+
 # docker run -d --name oauth2-service -p 8087:8087 --restart unless-stopped oauth2-service
 
 Остановить контейнер можно командой docker stop.
