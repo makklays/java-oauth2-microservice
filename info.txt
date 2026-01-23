@@ -1,4 +1,9 @@
 
+Этот микросервис имеет три Endpoint-а:
+/api/v1/oauth2/registration   - регистрация нового пользователя
+/api/v1/oauth2/login          - получения token пользователя по логин (username или email) и пароль
+/api/v1/oauth2/refresh-token  - URL для обновления token, если он expired
+
 Для запуска этого микросервиса используем команду:
 # docker run --env-file .env -p 8087:8087 oauth2-service
 
