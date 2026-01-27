@@ -11,6 +11,7 @@ package com.techmatrix18.enums;
 public enum Role {
     USER,
     ADMIN,
+    TRADER,
     AUDITOR,
     MODERATOR
 }
