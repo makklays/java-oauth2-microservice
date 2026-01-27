@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users
     id          BIGSERIAL PRIMARY KEY,
     username    VARCHAR(255),
     email       VARCHAR(200) NOT NULL,
+    roles       TEXT[] DEFAULT ARRAY['USER'],
     mobile      VARCHAR(20),
 
     gender      VARCHAR(50),

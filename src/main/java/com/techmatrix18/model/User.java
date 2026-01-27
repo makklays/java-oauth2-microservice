@@ -1,5 +1,6 @@
 package com.techmatrix18.model;
 
+import com.techmatrix18.enums.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * An entity representing a user in the system.
@@ -50,6 +52,12 @@ public class User implements Serializable {
     @Email(message = "Invalid email address")
     @Schema(description = "User's email address", example = "user@example.com")
     private String email;
+
+    /**
+     * User role.
+     */
+    @Schema(description = "User roles", example = "[\"USER\"]")
+    private Set<Role> roles;
 
     /**
      * User mobile. Must be unique.
@@ -115,6 +123,9 @@ public class User implements Serializable {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
+    public Set<Role> getRoles() { return roles; }
+    public void setRoles(Set<Role> roles) { this.roles = roles; }
+
     public String getMobile() { return mobile; }
     public void setMobile(String mobile) { this.mobile = mobile; }
 
@@ -141,7 +152,8 @@ public class User implements Serializable {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
         return getId().equals(user.getId()) && getUsername().equals(user.getUsername()) &&
-                getEmail().equals(user.getEmail()) && getMobile().equals(user.getMobile()) &&
+                getEmail().equals(user.getEmail()) &&
+                getRoles().equals(user.getRoles()) && getMobile().equals(user.getMobile()) &&
                 getGender().equals(user.getGender()) && getAge().equals(user.getAge()) &&
                 getAvatar().equals(user.getAvatar()) && Objects.equals(getPassword(), user.getPassword());
     }
@@ -153,6 +165,7 @@ public class User implements Serializable {
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
         result = 31 * result + (mobile != null ? mobile.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (age != null ? age.hashCode() : 0);
@@ -168,6 +181,7 @@ public class User implements Serializable {
             "id=" + id +
             ", username='" + username + '\'' +
             ", email='" + email + '\'' +
+            ", roles=" + roles +
             ", mobile='" + mobile + '\'' +
             ", gender='" + gender + '\'' +
             ", age='" + age + '\'' +
