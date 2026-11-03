@@ -22,10 +22,10 @@ import reactor.core.publisher.Mono;
  * @version 0.0.1
  * @since 22.01.2026
  */
+
 @RestController
 @RequestMapping("/api/v1/oauth2")
 public class AuthController {
-
     private final UserService userService;
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
